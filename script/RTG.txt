@@ -1,0 +1,93 @@
+
+
+
+
+
+
+---
+
+# **STEP 1 — Create TBI index for every file**
+
+RTG requires `.tbi`, so run these first:
+
+```bash
+bcftools index -t -f /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/BCF_normal_SNPs.vcf.gz
+bcftools index -t -f /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/Deepvariant_normal_SNPs.vcf.gz
+bcftools index -t -f /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/Freebayes_normal_SNPs.vcf.gz
+bcftools index -t -f /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/Gatk_normal_SNPs.vcf.gz
+bcftools index -t -f /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/Varscan_normal_SNPs.vcf.gz
+```
+
+---
+
+# **STEP 2 — Evaluate each tool separately (one by one)**
+
+
+---
+
+# ✅ **1. BCFtools evaluation**
+
+```bash
+rtg vcfeval \
+  -b /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/variants_minimap2.normalized.vcf.gz \
+  -c /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/BCF_normal_SNPs.vcf.gz \
+  -t /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/ref_sdf \
+  -o /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/assembly_evl/BCF_assembly_eval \
+  --vcf-score-field QUAL \
+  -T 32
+```
+
+---
+
+# ✅ **2. DeepVariant evaluation**
+
+```bash
+rtg vcfeval \
+  -b /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/variants_minimap2.normalized.vcf.gz \
+  -c /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/Deepvariant_normal_SNPs.vcf.gz \
+  -t /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/ref_sdf \
+  -o /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/assembly_evl/DeepVariant_assembly_eval \
+  --vcf-score-field QUAL \
+  -T 32
+```
+
+---
+
+# ✅ **3. FreeBayes evaluation**
+
+```bash
+rtg vcfeval \
+  -b /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/variants_minimap2.normalized.vcf.gz \
+  -c /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/Freebayes_normal_SNPs.vcf.gz \
+  -t /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/ref_sdf \
+  -o /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/assembly_evl/FreeBayes_assembly_eval \
+  --vcf-score-field QUAL \
+  -T 32
+```
+
+---
+
+# ✅ **4. GATK HaplotypeCaller evaluation**
+
+
+rtg vcfeval \
+  -b /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/variants_minimap2.normalized.vcf.gz \
+  -c /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/Gatk_normal_SNPs.vcf.gz \
+  -t /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/ref_sdf \
+  -o /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/assembly_evl/GATK_assembly_eval \
+  --vcf-score-field QUAL \
+  -T 32
+```
+
+---
+
+# ✅ **5. VarScan evaluation**
+
+rtg vcfeval \
+  -b /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/variants_minimap2.normalized.vcf.gz \
+  -c /home/work/Desktop/variants/new_latest_all_data/snvs/working/snps/Varscan_normal_SNPs.vcf.gz \
+  -t /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/ref_sdf \
+  -o /home/work/Desktop/variants/ASSEMBLY_TRUTH_SET_MINMAP_FINAL/assembly_evl/VarScan_assembly_eval \
+  --vcf-score-field QUAL \
+  -T 32
+
