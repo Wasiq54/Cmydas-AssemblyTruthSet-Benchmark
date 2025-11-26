@@ -1,0 +1,30 @@
+
+# POLCA to Polish ABySS Assembly Steps
+#  Step 1
+
+polca.sh -a /home/work/Desktop/variants/denovo_try/Abyss/Normal/W1-A-scaffolds.fa \
+         -r "/home/work/Desktop/variants/DataofDNA/CH-NORMS1/W1-A_1.fastq.gz /home/work/Desktop/variants/DataofDNA/CH-NORMS1/W1-A_2.fastq.gz" \
+         -t 70
+
+         
+#  Step 2
+          minimap2 -ax asm5 -t 70 \
+  /home/work/Desktop/variants/denovo_try/Reference/Reference.fasta \
+  /home/work/Desktop/variants/POLCA/W1-A-scaffolds.fa.PolcaCorrected.fa \
+  > /home/work/Desktop/variants/POLCA/truth_set/alignment.sam
+
+#  Step 3
+
+samtools view -@ 70 -bS /home/work/Desktop/variants/POLCA/truth_set/alignment.sam \
+  | samtools sort -@ 70 -o /home/work/Desktop/variants/POLCA/truth_set/alignment_sorted.bam
+
+#  Step 4
+
+samtools index /home/work/Desktop/variants/POLCA/truth_set/alignment_sorted.bam
+
+#  Step 5
+
+bcftools mpileup -f /home/work/Desktop/variants/denovo_try/Reference/Reference.fasta \
+  /home/work/Desktop/variants/POLCA/truth_set/alignment_sorted.bam \
+  -Ou | bcftools call -mv -Oz \
+  -o /home/work/Desktop/variants/POLCA/truth_set/variants_minimap2.vcf.gz
